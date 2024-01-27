@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:prod": "node index.js",
+    "pretest": "SET NODE_ENV=test&& npx sequelize-cli db:drop && SET NODE_ENV=test&& npx sequelize-cli db:create",
+    "test": "jest --detectOpenHandles",
     "prepare": "husky install"
   },
   "author": "",
@@ -24,7 +26,7 @@
     "tiny-csrf": "^1.1.4"
   },
   "devDependencies": {
-    "husky": "^9.0.2",
+    "husky": "^9.0.6",
     "sequelize-cli": "^6.6.2"
   }
 }

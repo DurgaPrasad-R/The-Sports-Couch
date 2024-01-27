@@ -32,7 +32,8 @@ const Scheduler = {
 
       // Step 3: Query Session table to get details of joined sessions
       const joinedSessions = await Session.findAll({
-        where: { id: sessionIds }, // Use the extracted sessionIds
+        where: { id: sessionIds },
+        include: Sport, // Use the extracted sessionIds
       });
 
       // Fetch sessions created by the user
@@ -145,7 +146,14 @@ const Scheduler = {
         sport_name,
       });
       const allSports = await Sport.findAll();
-      res.render("sportList", { allSports });
+      const sportIds = allSports.map((sport) => sport.id);
+      const sessionsCountBySport = await Session.findAll({
+        attributes: ["sport_id", [Sequelize.fn("COUNT", "id"), "sessionCount"]],
+        where: { sport_id: sportIds },
+        group: ["sport_id"],
+        raw: true,
+      });
+      res.render("sportList", { allSports, sessionsCountBySport });
     } catch (error) {
       if (error instanceof Sequelize.UniqueConstraintError) {
         res.status(400).json({ error: "Sport with this name already exists." });
