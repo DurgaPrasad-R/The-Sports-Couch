@@ -1,3 +1,6 @@
+/* eslint-disable semi */
+/* eslint-disable comma-dangle */
+/* eslint-disable quotes */
 const express = require("express");
 const { User } = require("./models");
 const bodyParser = require("body-parser");
@@ -21,7 +24,7 @@ app.use(
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
     },
-  })
+  }),
 );
 
 app.use(passport.initialize());
@@ -46,8 +49,8 @@ passport.use(
         .catch((error) => {
           return done(error);
         });
-    }
-  )
+    },
+  ),
 );
 
 passport.serializeUser((user, done) => {
@@ -67,7 +70,7 @@ app.get("/", Scheduler.dashboard);
 app.get(
   "/user-dashboard",
   connectEnsureLogin.ensureLoggedIn(),
-  Scheduler.getUserDashboard
+  Scheduler.getUserDashboard,
 );
 app.get("/signup", Scheduler.signup);
 app.get("/login", Scheduler.getSignin);
@@ -77,42 +80,42 @@ app.post(
   passport.authenticate("local", {
     failureRedirect: "/login",
   }),
-  Scheduler.getLogSession
+  Scheduler.getLogSession,
 );
 app.get(
   "/create-sport",
   connectEnsureLogin.ensureLoggedIn(),
-  Scheduler.getCreateSport
+  Scheduler.getCreateSport,
 );
 app.post(
   "/create-sport",
   connectEnsureLogin.ensureLoggedIn(),
-  Scheduler.createSport
+  Scheduler.createSport,
 );
 app.get(
   "/allSports",
   connectEnsureLogin.ensureLoggedIn(),
-  Scheduler.getAllSports
+  Scheduler.getAllSports,
 );
 app.get(
   "/create-session/:sportId",
   connectEnsureLogin.ensureLoggedIn(),
-  Scheduler.getCreateSession
+  Scheduler.getCreateSession,
 );
 app.post(
   "/create-session/:sportId",
   connectEnsureLogin.ensureLoggedIn(),
-  Scheduler.createSession
+  Scheduler.createSession,
 );
 app.get(
   "/sessions/:sportId",
   connectEnsureLogin.ensureLoggedIn(),
-  Scheduler.displaySessions
+  Scheduler.displaySessions,
 );
 app.get(
   "/created-sessions",
   connectEnsureLogin.ensureLoggedIn(),
-  Scheduler.displayCreatedSessions
+  Scheduler.displayCreatedSessions,
 );
 app.post("/users", Scheduler.addUsers);
 app.get("/join-session/:sessionId", Scheduler.getJoinSession);
@@ -120,10 +123,8 @@ app.post("/join-session/:sessionId", Scheduler.joinSession);
 app.get(
   "/joined-sessions",
   connectEnsureLogin.ensureLoggedIn(),
-  Scheduler.displayJoinedSessions
+  Scheduler.displayJoinedSessions,
 );
 app.post("/cancel-session/:sessionId", Scheduler.cancelSession);
 
-app.listen(3000, () => {
-  console.log("Started Server at port 3000!");
-});
+module.exports = app;

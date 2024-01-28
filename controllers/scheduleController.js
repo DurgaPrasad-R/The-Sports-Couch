@@ -1,15 +1,23 @@
+/* eslint-disable camelcase */
+/* eslint-disable comma-dangle */
+/* eslint-disable semi */
+/* eslint-disable quotes */
 const { Sequelize } = require("sequelize");
 const { Sport, Session, User, UserSession } = require("../models");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const Scheduler = {
   dashboard: (req, res) => {
-    res.render("index", { csrfToken: req.csrfToken() });
+    if (req.accepts("html")) {
+      res.render("index", { csrfToken: req.csrfToken() });
+    } else {
+      res.json({ success: true });
+    }
   },
   getUserDashboard: async (req, res) => {
     try {
       const userId = req.user.id;
-
+      const isAdmin = req.user.isAdmin;
       // Fetch all sports
       const allSports = await Sport.findAll();
       const sportIds = allSports.map((sport) => sport.id);
@@ -27,7 +35,7 @@ const Scheduler = {
 
       // Step 2: Extract sessionIds from the result
       const sessionIds = userSessions.map(
-        (userSession) => userSession.sessionId
+        (userSession) => userSession.sessionId,
       );
 
       // Step 3: Query Session table to get details of joined sessions
@@ -38,7 +46,7 @@ const Scheduler = {
 
       // Fetch sessions created by the user
       const sessions = await Session.findAll({
-        where: { userId: userId },
+        where: { userId },
         include: Sport,
       });
       res.render("userDashboard", {
@@ -46,6 +54,7 @@ const Scheduler = {
         sessionsCountBySport,
         joinedSessions,
         sessions,
+        isAdmin,
         csrfToken: req.csrfToken(),
       });
     } catch (error) {
@@ -117,7 +126,7 @@ const Scheduler = {
       const parsedAvailablePlayers = available_players.split(",");
 
       // Create the session with the associated sport
-      const createdSession = await Session.create({
+      await Session.create({
         date,
         time,
         venue,
@@ -142,9 +151,10 @@ const Scheduler = {
   createSport: async (req, res) => {
     try {
       const { sport_name } = req.body;
-      const createdSport = await Sport.create({
+      await Sport.create({
         sport_name,
       });
+
       const allSports = await Sport.findAll();
       const sportIds = allSports.map((sport) => sport.id);
       const sessionsCountBySport = await Session.findAll({
@@ -185,7 +195,7 @@ const Scheduler = {
           sport_id: sportId,
           id: {
             [Sequelize.Op.notIn]: Sequelize.literal(
-              `(SELECT "sessionId" FROM "UserSessions" WHERE "userId" = ${userId})`
+              `(SELECT "sessionId" FROM "UserSessions" WHERE "userId" = ${userId})`,
             ),
           },
         },
@@ -208,7 +218,6 @@ const Scheduler = {
       // Extract the session ID and user ID from the request parameters
       const { sessionId } = req.params;
       const userId = req.user.id; // Assuming you have user information stored in req.user
-      console.log(req.user.name);
       const userName = req.user.name;
 
       // Check if the provided session ID exists
@@ -261,7 +270,7 @@ const Scheduler = {
 
       // Fetch sessions created by the user
       const createdSessions = await Session.findAll({
-        where: { userId: userId },
+        where: { userId },
         include: Sport,
       });
       // console.log(createdSessions.length);
@@ -306,7 +315,7 @@ const Scheduler = {
 
       // Step 2: Extract sessionIds from the result
       const sessionIds = userSessions.map(
-        (userSession) => userSession.sessionId
+        (userSession) => userSession.sessionId,
       );
 
       // Step 3: Query Session table to get details of joined sessions
@@ -317,7 +326,7 @@ const Scheduler = {
 
       // Now, joinedSessions contains the details of sessions that the user has joined
 
-      res.render("joinedSessions", { joinedSessions: joinedSessions });
+      res.render("joinedSessions", { joinedSessions });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

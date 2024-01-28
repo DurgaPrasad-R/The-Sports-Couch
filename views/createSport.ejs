@@ -1,35 +1,65 @@
-<!-- createSportForm.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Sport</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
   </head>
-  <body>
-    <div class="grid grid-cols-6">
-      <div class="col-start-3 col-span-2">
-        <h2 class="text-xl">Create Sport</h2>
-        <form action="/create-sport" method="post">
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-          <label for="sportName">Sport Name:</label>
+
+  <body class="relative h-screen font-sans">
+    <div
+      class="absolute left-1/2 top-1/2 w-96 -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white p-8"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="mx-auto mb-4 h-6 w-6 text-black"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
+        />
+      </svg>
+
+      <h2 class="mb-6 text-center text-2xl font-bold">Create a New Sport</h2>
+      <form action="/create-sport" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+        <div class="mb-4">
+          <label for="sportName" class="block text-sm font-medium text-gray-600"
+            >Sport Name:</label
+          >
           <input
             type="text"
             id="sportName"
             name="sport_name"
-            class="border border-gray-300 text-gray-900 text-sm rounded w-full p-2"
+            class="mt-1 w-full p-2 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter the sport name"
             required
           />
-          <br />
-          <button
-            type="submit"
-            class="text-white bg-green-600 hover:bg-green-800 font-medium rounded px-5 py-2"
-          >
-            Create Sport
-          </button>
-        </form>
-      </div>
+        </div>
+
+        <button
+          type="submit"
+          class="mx-auto block rounded bg-blue-500 px-5 py-2 font-medium text-white hover:bg-blue-700 focus:border-blue-700 focus:outline-none focus:ring"
+        >
+          Create Sport
+        </button>
+      </form>
     </div>
   </body>
 </html>
