@@ -118,7 +118,6 @@ app.get(
   Scheduler.displayCreatedSessions,
 );
 app.post("/users", Scheduler.addUsers);
-app.get("/join-session/:sessionId", Scheduler.getJoinSession);
 app.post("/join-session/:sessionId", Scheduler.joinSession);
 app.get(
   "/joined-sessions",
