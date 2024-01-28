@@ -207,12 +207,6 @@ const Scheduler = {
       res.status(500).json({ error: error.message });
     }
   },
-
-  getJoinSession: (req, res) => {
-    const sessionId = req.params.sessionId;
-    console.log(req.user.name);
-    res.render("joinSession", { sessionId, csrfToken: req.csrfToken() });
-  },
   joinSession: async (req, res) => {
     try {
       // Extract the session ID and user ID from the request parameters
