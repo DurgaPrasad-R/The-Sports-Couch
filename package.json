@@ -10,6 +10,11 @@
     "test": "jest --detectOpenHandles",
     "prepare": "husky install"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "sh ./.husky/pre-commit.sh"
+    }
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
