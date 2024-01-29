@@ -35,8 +35,7 @@ describe("Sports Scheduler test suite", () => {
     let res = await agent.get("/signup");
     const csrfToken = extractCsrfToken(res);
     res = await agent.post("/users").send({
-      firstName: "Test",
-      lastName: "userA",
+      name: "userA",
       email: "userA@example.com",
       password: "1234",
       _csrf: csrfToken,
