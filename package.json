@@ -8,12 +8,7 @@
     "start:prod": "node index.js",
     "pretest": "SET NODE_ENV=test&& npx sequelize-cli db:drop && SET NODE_ENV=test&& npx sequelize-cli db:create",
     "test": "jest --detectOpenHandles",
-    "prepare": "husky install"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "sh ./.husky/pre-commit.sh"
-    }
+    "prepare": "husky"
   },
   "author": "",
   "license": "ISC",
