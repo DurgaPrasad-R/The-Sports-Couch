@@ -135,12 +135,14 @@
                 </span>
               </button>
             </div>
+            <% if (isAdmin) { %>
             <% if (sessionsCountBySport) { %> <% const matchingObject =
             sessionsCountBySport.find(item => item.sport_id === sport.id); %> <%
             if (matchingObject) { %> No. of sessions created: <%= matchingObject
             ? matchingObject.sessionCount : 0 %> <% } else { %>
             <p>No sessions created for this sport.</p>
             <% } %> <% } %>
+            <% } %>
           </div>
           <% }); %>
         </div>
